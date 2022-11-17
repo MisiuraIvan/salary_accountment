@@ -12,4 +12,36 @@ public class Post {
     private int wages;
     @OneToMany
     private List<User> users;
+
+    public Integer getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Integer postId) {
+        this.postId = postId;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public int getWages() {
+        return wages;
+    }
+
+    public void setWages(int wages) {
+        this.wages = wages;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }

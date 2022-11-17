@@ -19,4 +19,68 @@ public class Salary {
     private Activity activity;
     @OneToOne
     private Parameters parameters;
+
+    public Integer getSalaryId() {
+        return salaryId;
+    }
+
+    public void setSalaryId(Integer salaryId) {
+        this.salaryId = salaryId;
+    }
+
+    public float getAward() {
+        return award;
+    }
+
+    public void setAward(float award) {
+        this.award = award;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public boolean isPrepayment() {
+        return prepayment;
+    }
+
+    public void setPrepayment(boolean prepayment) {
+        this.prepayment = prepayment;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public TimeSheet getTimeSheet() {
+        return timeSheet;
+    }
+
+    public void setTimeSheet(TimeSheet timeSheet) {
+        this.timeSheet = timeSheet;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public Parameters getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Parameters parameters) {
+        this.parameters = parameters;
+    }
 }
