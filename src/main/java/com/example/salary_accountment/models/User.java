@@ -115,4 +115,17 @@ public class User {
     public void setTimeSheets(List<TimeSheet> timeSheets) {
         this.timeSheets = timeSheets;
     }
+    public User (){
+
+    }
+    public User(Integer userid, String firstName, String lastName, String patronymic, String mail, String phone, String birthday, String startDate) {
+        this.userid = userid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.mail = mail;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.startDate = startDate;
+    }
 }

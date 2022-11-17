@@ -13,6 +13,18 @@ public class AuthorizationData {
     @OneToOne
     private User user;
 
+    public AuthorizationData() {
+    }
+
+    public AuthorizationData(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public AuthorizationData(String login) {
+        this.login = login;
+    }
+
     public Integer getAuthorizationId() {
         return authorizationId;
     }

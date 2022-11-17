@@ -21,11 +21,11 @@ public class MainController {
     public String home(Model model){
         return "home";
     }
-/*    @PostMapping
+    @PostMapping
     public String login(@RequestParam String login, @RequestParam String password, Model model){
         Optional<User> user = userRepository.findUserByLoginAndPassword(login,password);
         if(user.isPresent()){
-            Long id=user.get().getUserId();
+            Integer id=user.get().getUserid();
             switch(user.get().getPost().getPost()){
                 case "Директор": return "redirect:/admin/"+id.toString();
                 case "Бухгалтер": return "redirect:/accounter/"+id.toString();
@@ -34,5 +34,5 @@ public class MainController {
         }else{
             return "redirect:/";
         }
-    }*/
+    }
 }
