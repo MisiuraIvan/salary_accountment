@@ -5,16 +5,16 @@
         <form method="post">
             <div class="row g-3">
                 <div class="col-6">
-                    <label for="firstname" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" id="firstname"name="firstname" placeholder="" th:value="${user.firstName}" required="">
+                    <label for="lastname" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control" id="lastname"name="lastname" placeholder="" th:value="${user.firstName}" required="">
                     <div class="invalid-feedback">
                         Valid first name is required.
                     </div>
                 </div>
 
                 <div class="col-6">
-                    <label for="lastname" class="form-label">Имя</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="" th:value="${user.lastName}" required="">
+                    <label for="firstname" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" th:value="${user.lastName}" required="">
                     <div class="invalid-feedback">
                         Valid last name is required.
                     </div>

@@ -1,0 +1,28 @@
+<div th:fragment="timesheetstable">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Фамилия</th>
+            <th>Отработанные часы</th>
+            <th>Дата</th>
+            <th>Отпуск</th>
+            <th>Переработки</th>
+            <th>Больничные</th>
+            <th>Прогулы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el:${timesheets}">
+            <th th:text="${el.user.lastName}"></th>
+            <th th:text="${el.workTime}"></th>
+            <th th:text="${el.date.month}+' '+${el.date.month}"></th>
+            <th th:text="${el.holiday}"></th>
+            <th th:text="${el.overtime}"></th>
+            <th th:text="${el.sickLeave}"></th>
+            <th th:text="${el.absenteeism}"></th>
+            <th><a th:href="@{/admin/timesheets/details/{id}(id=${el.timeSheetId})}">Подробнее</a></th>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

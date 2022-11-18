@@ -1,0 +1,26 @@
+<div th:fragment="activitytable">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Вредные привычки</th>
+            <th>Бонусы</th>
+            <th>Мероприятия</th>
+            <th>Опаздания</th>
+            <th>Отзыв</th>
+            <th>Сроки сдачи</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el:${activity}">
+            <th th:text="${el.badHabits}"></th>
+            <th th:text="${el.bonus}"></th>
+            <th th:text="${el.culturalEvents}"></th>
+            <th th:text="${el.delay}"></th>
+            <th th:text="${el.respect}"></th>
+            <th th:text="${el.timeLiness}"></th>
+            <th><a th:href="@{/admin/activity/details/{id}(id=${el.activityId})}">Подробнее</a></th>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
