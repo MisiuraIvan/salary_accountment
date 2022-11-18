@@ -1,0 +1,18 @@
+<div th:fragment="poststable">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Должность</th>
+            <th>Оклад</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el:${posts}">
+            <th th:text="${el.post}"></th>
+            <th th:text="${el.wages}"></th>
+            <th><a th:href="@{/admin/posts/details/{id}(id=${el.postId})}">Подробнее</a></th>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

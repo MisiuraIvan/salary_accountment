@@ -128,4 +128,17 @@ public class User {
         this.birthday = birthday;
         this.startDate = startDate;
     }
+
+    public User(Integer userid, String firstName, String lastName, String patronymic, String mail, String phone, String birthday, String startDate, Post post, AuthorizationData authorizationData) {
+        this.userid = userid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.mail = mail;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.startDate = startDate;
+        this.post = post;
+        this.authorizationData = authorizationData;
+    }
 }
