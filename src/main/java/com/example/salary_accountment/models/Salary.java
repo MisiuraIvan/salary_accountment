@@ -9,6 +9,7 @@ public class Salary {
     private Integer salaryId;
     private float award;
     private double salary;
+    private double paidSalary;
     private boolean prepayment;
     private boolean paid;
     @OneToOne
@@ -82,5 +83,13 @@ public class Salary {
 
     public void setParameters(Parameters parameters) {
         this.parameters = parameters;
+    }
+
+    public double getPaidSalary() {
+        return paidSalary;
+    }
+
+    public void setPaidSalary(double paidSalary) {
+        this.paidSalary = paidSalary;
     }
 }

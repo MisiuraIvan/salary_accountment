@@ -2,15 +2,16 @@
     <table class="table" >
         <thead>
         <tr>
-            <th></th>
-            <th>Месяц</th>
-            <th>Год</th>
-            <th>Количество рабочих часов</th>
+            <th>Фамилия сотрудника</th>
+            <th>Премия</th>
+            <th>Заработная плата</th>
+            <th>Выплата аванса</th>
+            <th>Выплата зарплаты</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="el:${salaries}">
-            <th th:text="${el.month}"></th>
+            <th th:text="${el.timeSheet.user.lastName}"></th>
             <th th:text="${el.year}"></th>
             <th th:text="${el.workHours}"></th>
             <th><a th:href="@{/admin/dates/details/{id}(id=${el.dateId})}">Подробнее</a></th>
