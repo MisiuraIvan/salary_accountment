@@ -71,7 +71,7 @@ public class AdminController {
         Iterable<TimeSheet> timeSheets = timeSheetRepository.findAll();
         model.addAttribute("timeSheets", timeSheets);
         model.addAttribute("id", uid);
-        return "timesheeets";
+        return "timesheets";
     }
     @GetMapping("/admin/salaries")
     public String salaries(Model model) {

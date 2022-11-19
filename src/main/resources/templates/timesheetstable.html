@@ -12,10 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="el:${timesheets}">
+        <tr th:each="el:${timeSheets}">
             <th th:text="${el.user.lastName}"></th>
             <th th:text="${el.workTime}"></th>
-            <th th:text="${el.date.month}+' '+${el.date.month}"></th>
+            <th th:text="${el.date.month}+' '+${el.date.year}"></th>
             <th th:text="${el.holiday}"></th>
             <th th:text="${el.overtime}"></th>
             <th th:text="${el.sickLeave}"></th>

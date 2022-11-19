@@ -6,15 +6,17 @@
             <th>Премия</th>
             <th>Заработная плата</th>
             <th>Выплата аванса</th>
-            <th>Выплата зарплаты</th>
+            <th>Выплаченная сумма</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="el:${salaries}">
             <th th:text="${el.timeSheet.user.lastName}"></th>
-            <th th:text="${el.year}"></th>
-            <th th:text="${el.workHours}"></th>
-            <th><a th:href="@{/admin/dates/details/{id}(id=${el.dateId})}">Подробнее</a></th>
+            <th th:text="${el.award}"></th>
+            <th th:text="${el.salary}"></th>
+            <th th:text="${el.prepayment}"></th>
+            <th th:text="${el.paidSalary}"></th>
+            <th><a th:href="@{/admin/salary/details/{id}(id=${el.salaryId})}">Подробнее</a></th>
         </tr>
         </tbody>
     </table>

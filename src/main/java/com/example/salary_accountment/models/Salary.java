@@ -11,7 +11,6 @@ public class Salary {
     private double salary;
     private double paidSalary;
     private boolean prepayment;
-    private boolean paid;
     @OneToOne
     @JoinColumn(name="timeSheetId", referencedColumnName = "timeSheetId", nullable = false)
     private TimeSheet timeSheet;
@@ -51,14 +50,6 @@ public class Salary {
 
     public void setPrepayment(boolean prepayment) {
         this.prepayment = prepayment;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
     }
 
     public TimeSheet getTimeSheet() {
