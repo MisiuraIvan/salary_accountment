@@ -59,6 +59,13 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "employees";
     }
+    @GetMapping("/admin/employees/details/{id}")
+    public String empDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<User> user = userRepository.findById(id);
+        model.addAttribute("user", user.get());
+        model.addAttribute("id", uid);
+        return "empDetails";
+    }
     @GetMapping("/admin/posts")
     public String posts(Model model) {
         Iterable<Post> posts = postRepository.findAll();
@@ -66,12 +73,26 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "posts";
     }
+    @GetMapping("/admin/posts/details/{id}")
+    public String postsDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Post> post = postRepository.findById(id);
+        model.addAttribute("post", post.get());
+        model.addAttribute("id", uid);
+        return "postsDetails";
+    }
     @GetMapping("/admin/timesheets")
     public String timesheets(Model model) {
         Iterable<TimeSheet> timeSheets = timeSheetRepository.findAll();
         model.addAttribute("timeSheets", timeSheets);
         model.addAttribute("id", uid);
         return "timesheets";
+    }
+    @GetMapping("/admin/timesheets/details/{id}")
+    public String timesheetsDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<TimeSheet> timeSheet = timeSheetRepository.findById(id);
+        model.addAttribute("timeSheet", timeSheet.get());
+        model.addAttribute("id", uid);
+        return "timesheetsDetails";
     }
     @GetMapping("/admin/salaries")
     public String salaries(Model model) {
