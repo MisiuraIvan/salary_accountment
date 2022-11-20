@@ -1,6 +1,6 @@
 <div th:fragment="timesheetdata">
     <div class="form2">
-        <h4 class="mb-3" th:value="'Табель №'+${timeSheet.timeSheetId}"></h4>
+        <h4 class="mb-3" th:text="'Табель №'+${timeSheet.timeSheetId}"></h4>
         <hr class="my-4">
         <form method="post">
             <div class="row g-3">

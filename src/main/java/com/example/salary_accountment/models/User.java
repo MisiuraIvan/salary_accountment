@@ -28,6 +28,9 @@ public class User {
     @OneToMany
     private List<TimeSheet> timeSheets;
 
+    @OneToMany
+    private List<Activity> activity;
+
     public Integer getUserid() {
         return userid;
     }

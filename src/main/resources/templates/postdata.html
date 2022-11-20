@@ -1,6 +1,6 @@
 <div th:fragment="postdata">
     <div class="form2">
-        <h4 class="mb-3">Данные должности</h4>
+        <h4 class="mb-3" th:text="'Должность №'+${post.postId}"></h4>
         <hr class="my-4">
         <form method="post">
             <div class="row g-3">

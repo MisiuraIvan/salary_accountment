@@ -14,6 +14,9 @@ public class Activity {
     private Date date;
     @OneToOne
     private Salary salary;
+    @ManyToOne
+    @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false)
+    private User user;
 
     public Integer getActivityId() {
         return activityId;

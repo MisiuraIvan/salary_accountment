@@ -101,6 +101,13 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "salaries";
     }
+    @GetMapping("/admin/salaries/details/{id}")
+    public String salariesDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Salary> salary = salaryRepository.findById(id);
+        model.addAttribute("salary", salary.get());
+        model.addAttribute("id", uid);
+        return "salariesDetails";
+    }
     @GetMapping("/admin/activity")
     public String activity(Model model) {
         Iterable<Activity> activity = activityRepository.findAll();
@@ -108,11 +115,25 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "activity";
     }
+    @GetMapping("/admin/activity/details/{id}")
+    public String activityDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Activity> activity = activityRepository.findById(id);
+        model.addAttribute("activity", activity.get());
+        model.addAttribute("id", uid);
+        return "activityDetails";
+    }
     @GetMapping("/admin/dates")
     public String dates(Model model) {
         Iterable<Date> dates = dateRepository.findAll();
         model.addAttribute("dates", dates);
         model.addAttribute("id", uid);
         return "dates";
+    }
+    @GetMapping("/admin/dates/details/{id}")
+    public String datesDetails(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Date> date = dateRepository.findById(id);
+        model.addAttribute("date", date.get());
+        model.addAttribute("id", uid);
+        return "datesDetails";
     }
 }
