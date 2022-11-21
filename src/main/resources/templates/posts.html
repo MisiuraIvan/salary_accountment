@@ -9,14 +9,13 @@
 <body>
 <adminheader th:insert="adminheader::adminheader"></adminheader>
 <div class="form3">
-    <h4 class="mb-3">Поиск</h4>
+    <div class="col-12">
+        <a th:href="@{/admin/posts/add}">Создать новую должность</a>
+    </div>
     <hr class="my-4">
+    <h4 class="mb-3">Поиск</h4>
     <form method="post">
         <div class="row g-3">
-
-            <div class="col-12">
-                <a th:href="@{/admin/posts/add}">Создать новую должность</a>
-            </div>
 
             <div class="col-6">
                 <label class="form-label">Должность</label>
@@ -27,7 +26,7 @@
             </div>
 
             <div class="col-6">
-                <input type="submit" name="operation" value="Find">Найти</input>
+                <button class="w-100 btn btn-primary btn-lg" type="submit" name="operation" value="Find">Найти</button>
             </div>
     </form>
 </div>

@@ -73,6 +73,13 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "posts";
     }
+    @PostMapping(path="/admin/posts",params ="operation=Find")
+    public String postsFind(Model model, @RequestParam String post) {
+        Optional<Post> posts = postRepository.findByName(post);
+        model.addAttribute("posts", posts.get());
+        model.addAttribute("id", uid);
+        return "posts";
+    }
     @GetMapping("/admin/posts/details/{id}")
     public String postsDetails(@PathVariable(value = "id") Integer id, Model model) {
         Optional<Post> post = postRepository.findById(id);
@@ -87,7 +94,8 @@ public class AdminController {
     }
     @PostMapping("/admin/posts/add")
     public String postAdd(Model model,@RequestParam String post,@RequestParam int wages) {
-        Integer id=postRepository.findTheBiggestId();
+        Iterable<Post> post1 = postRepository.findAllSort();
+        int id=post1.iterator().next().getPostId();
         Post p = new Post(id+1,post,wages);
         postRepository.save(p);
         return "redirect:/admin/posts";

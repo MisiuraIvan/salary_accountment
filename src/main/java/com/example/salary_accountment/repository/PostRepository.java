@@ -8,6 +8,11 @@ import java.util.Optional;
 public interface PostRepository extends CrudRepository<Post,Integer>{
     @Query("select u from Post u where u.post = :#{#post}")
     Optional<Post> findByName(String post);
-    @Query("select max(postId) from Post")
-    Integer findTheBiggestId();
+
+    @Query(value = "SELECT max(postId) FROM Post")
+    int findTheBiggestId();
+
+    @Query("select u from Post u order by u.postId desc")
+    Iterable<Post> findAllSort();
+
 }
