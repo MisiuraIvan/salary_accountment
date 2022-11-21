@@ -13,6 +13,19 @@ public class Post {
     @OneToMany
     private List<User> users;
 
+    public Post(){}
+
+    public Post(Integer id, String post, int wages) {
+        this.postId=id;
+        this.post=post;
+        this.wages=wages;
+    }
+
+    public Post(String post, int wages) {
+        this.post=post;
+        this.wages=wages;
+    }
+
     public Integer getPostId() {
         return postId;
     }

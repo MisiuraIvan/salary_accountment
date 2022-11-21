@@ -8,6 +8,29 @@
 </head>
 <body>
 <adminheader th:insert="adminheader::adminheader"></adminheader>
+<div class="form3">
+    <h4 class="mb-3">Поиск</h4>
+    <hr class="my-4">
+    <form method="post">
+        <div class="row g-3">
+
+            <div class="col-12">
+                <a th:href="@{/admin/posts/add}">Создать новую должность</a>
+            </div>
+
+            <div class="col-6">
+                <label class="form-label">Должность</label>
+                <input type="text" class="form-control" id="post" name="post" required="">
+                <div class="invalid-feedback">
+                    Valid last name is required.
+                </div>
+            </div>
+
+            <div class="col-6">
+                <input type="submit" name="operation" value="Find">Найти</input>
+            </div>
+    </form>
+</div>
 <poststable th:insert="poststable::poststable"></poststable>
 </body>
 </html>

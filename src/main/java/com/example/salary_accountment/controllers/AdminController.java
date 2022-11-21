@@ -80,6 +80,31 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "postsDetails";
     }
+    @GetMapping("/admin/posts/add")
+    public String postsAdd(Model model) {
+        model.addAttribute("id", uid);
+        return "postAdd";
+    }
+    @PostMapping("/admin/posts/add")
+    public String postAdd(Model model,@RequestParam String post,@RequestParam int wages) {
+        Integer id=postRepository.findTheBiggestId();
+        Post p = new Post(id+1,post,wages);
+        postRepository.save(p);
+        return "redirect:/admin/posts";
+    }
+    @PostMapping(path="/admin/posts/details/{id}",params = "operation=Edit")
+    public String postEdit(@PathVariable(value = "id") Integer id,@RequestParam String post,@RequestParam int wages, Model model) {
+        Optional<Post> post1 = postRepository.findById(id);
+        Post p = new Post(id,post,wages);
+        postRepository.save(p);
+        return "redirect:/admin/posts/details/{id}";
+    }
+    @PostMapping(path="/admin/posts/details/{id}",params = "operation=Delete")
+    public String postDelete(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Post> post1 = postRepository.findById(id);
+        postRepository.delete(post1.get());
+        return "redirect:/admin/posts";
+    }
     @GetMapping("/admin/timesheets")
     public String timesheets(Model model) {
         Iterable<TimeSheet> timeSheets = timeSheetRepository.findAll();
@@ -135,5 +160,13 @@ public class AdminController {
         model.addAttribute("date", date.get());
         model.addAttribute("id", uid);
         return "datesDetails";
+    }
+
+    @GetMapping("/admin/posts/find")
+    public String postsFind(@RequestParam String post, Model model) {
+        Optional<Post> posts = postRepository.findByName(post);
+        model.addAttribute("posts", posts);
+        model.addAttribute("id", uid);
+        return "redirect:/admin/posts";
     }
 }
