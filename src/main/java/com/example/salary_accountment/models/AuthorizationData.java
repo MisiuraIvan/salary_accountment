@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class AuthorizationData {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer authorizationId;
     private String login;
     private String password;
@@ -23,6 +22,12 @@ public class AuthorizationData {
 
     public AuthorizationData(String login) {
         this.login = login;
+    }
+
+    public AuthorizationData(int aid, String login, String password) {
+        this.authorizationId=aid;
+        this.login = login;
+        this.password = password;
     }
 
     public Integer getAuthorizationId() {

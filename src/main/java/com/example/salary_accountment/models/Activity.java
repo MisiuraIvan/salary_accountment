@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class Activity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer activityId;
     private int culturalEvents, delay, bonus, respect, uniform, timeliness, badHabits;
     @ManyToOne

@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class TimeSheet {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer timeSheetId;
     private int workTime,sickLeave,holiday,overtime,absenteeism;
     @ManyToOne

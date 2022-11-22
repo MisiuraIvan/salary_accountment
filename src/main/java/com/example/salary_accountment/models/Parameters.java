@@ -4,7 +4,6 @@ import javax.persistence.*;
 @Entity
 public class Parameters {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer parametersId;
     private double netSalary, pension, fszn;
     @OneToOne

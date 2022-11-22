@@ -66,6 +66,42 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "empDetails";
     }
+    @GetMapping("/admin/employees/add")
+    public String employeesAdd(Model model) {
+        model.addAttribute("id", uid);
+        return "employeesAdd";
+    }
+    @PostMapping(path="/admin/employees",params ="operation=Find")
+    public String employeesFind(Model model, @RequestParam String lastName,@RequestParam String post) {
+        Iterable<User> employees=null;
+        if (!lastName.equals("") && !post.equals("")) {
+            employees = userRepository.findByLastNameAndPost(lastName,post);
+        }else{
+            if(!lastName.equals("")){
+                employees = userRepository.findByLastName(lastName);
+            }
+            else{
+                if(!post.equals("")){
+                    employees = userRepository.findByPost(post);
+                }
+                else return "redirect:/admin/employees";
+            }
+        }
+        model.addAttribute("employees", employees);
+        model.addAttribute("id", uid);
+        return "employees";
+    }
+    @PostMapping("/admin/employees/add")
+    public String employeeAdd(Model model,@RequestParam String firstname, @RequestParam String lastname, @RequestParam String patronymic, @RequestParam String mail, @RequestParam String phone, @RequestParam String birthday, @RequestParam String startDate, @RequestParam String post,@RequestParam String login, @RequestParam String password) {
+        int id=userRepository.findTheBiggestId();
+        Optional<Post> post1 = postRepository.findByName(post);
+        int aid=authorizationDataRepository.findTheBiggestSort();
+        AuthorizationData authorizationData=new AuthorizationData(aid+1,login, password);
+        authorizationDataRepository.save(authorizationData);
+        User user = new User(id+1,firstname,lastname,patronymic,mail,phone,birthday,startDate,post1.get(),authorizationData);
+        userRepository.save(user);
+        return "redirect:/admin/employees";
+    }
     @GetMapping("/admin/posts")
     public String posts(Model model) {
         Iterable<Post> posts = postRepository.findAll();
@@ -94,8 +130,7 @@ public class AdminController {
     }
     @PostMapping("/admin/posts/add")
     public String postAdd(Model model,@RequestParam String post,@RequestParam int wages) {
-        Iterable<Post> post1 = postRepository.findAllSort();
-        int id=post1.iterator().next().getPostId();
+        int id = postRepository.findTheBiggestId();
         Post p = new Post(id+1,post,wages);
         postRepository.save(p);
         return "redirect:/admin/posts";

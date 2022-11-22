@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Entity
 public class Salary {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer salaryId;
     private float award;
     private double salary;

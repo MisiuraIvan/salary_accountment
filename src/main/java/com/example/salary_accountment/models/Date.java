@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 public class Date {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer dateId;
     private String month;
     private int year,workHours;

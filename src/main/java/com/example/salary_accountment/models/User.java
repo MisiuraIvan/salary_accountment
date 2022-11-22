@@ -7,7 +7,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userid;
     private String firstName;
     private String lastName;
@@ -22,7 +21,7 @@ public class User {
     private Post post;
 
     @OneToOne
-    @JoinColumn(name="authorizationId", referencedColumnName = "authorizationId", nullable = false)
+    @JoinColumn(name="authorizationId", referencedColumnName = "authorizationId")
     private AuthorizationData authorizationData;
 
     @OneToMany
