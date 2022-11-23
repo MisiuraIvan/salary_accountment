@@ -2,6 +2,7 @@ package com.example.salary_accountment.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Activity {
@@ -16,6 +17,19 @@ public class Activity {
     @ManyToOne
     @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false)
     private User user;
+
+    public Activity(int activityId, int badHabits, int bonus, int culturalEvents, int delay, int respect, int timeliness, int uniform, Date date, User user) {
+        this.activityId = activityId;
+        this.culturalEvents = culturalEvents;
+        this.delay = delay;
+        this.bonus = bonus;
+        this.respect = respect;
+        this.uniform = uniform;
+        this.timeliness = timeliness;
+        this.badHabits = badHabits;
+        this.date = date;
+        this.user = user;
+    }
 
     public Integer getActivityId() {
         return activityId;

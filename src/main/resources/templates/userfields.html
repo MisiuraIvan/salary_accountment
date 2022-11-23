@@ -1,0 +1,89 @@
+<div th:fragment="userfields">
+    <div class="row g-3">
+        <div class="col-6">
+            <label for="lastname" class="form-label">Фамилия</label>
+            <input type="text" class="form-control" id="lastname"name="lastname" placeholder="" th:value="${user.firstName}" required="">
+            <div class="invalid-feedback">
+                Valid first name is required.
+            </div>
+        </div>
+
+        <div class="col-6">
+            <label for="firstname" class="form-label">Имя</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="" th:value="${user.lastName}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="patronymic" class="form-label">Отчество</label>
+            <input type="text" class="form-control"  id="patronymic" name="patronymic"placeholder="" th:value="${user.patronymic}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Должность</label>
+            <input type="text" class="form-control" id="post" name="post" placeholder="" th:value="${user.post.post}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Почта</label>
+            <input type="text" class="form-control" id="mail" name="mail" placeholder="" th:value="${user.mail}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Мобильный телефон</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="" th:value="${user.phone}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Дата рождения</label>
+            <input type="date" class="form-control" id="birthday" name="birthday" placeholder="" th:value="${user.birthday}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Дата начала работы</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" placeholder="" th:value="${user.startDate}" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Логин</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text">#</span>
+                <input type="text" class="form-control" id="login" name="login" th:value="${user.authorizationData.login}" required="">
+                <div class="invalid-feedback">
+                    Your username is required.
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Пароль</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text">#</span>
+                <input type="password" class="form-control" id="password" name="password" th:value="${user.authorizationData.password}" required="">
+                <div class="invalid-feedback">
+                    Your username is required.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

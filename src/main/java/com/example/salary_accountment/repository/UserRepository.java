@@ -22,4 +22,7 @@ public interface UserRepository extends CrudRepository<User,Integer> {
 
     @Query("select max(userid) from User")
     int findTheBiggestId();
+
+    @Query("select u from User u where u.lastName=:#{#s1} and u.firstName=:#{#s}")
+    Optional<User> findByNameAndLastName(String s, String s1);
 }

@@ -12,6 +12,17 @@ public class Date {
     @OneToMany
     private List<TimeSheet> timeSheets;
 
+    public Date(){
+
+    }
+
+    public Date(int i, String month, int year, int workHours) {
+        this.dateId=i;
+        this.month=month;
+        this.year=year;
+        this.workHours=workHours;
+    }
+
     public Integer getDateId() {
         return dateId;
     }
