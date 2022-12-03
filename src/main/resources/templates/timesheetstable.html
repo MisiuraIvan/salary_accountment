@@ -3,7 +3,7 @@
     <table class="table" >
         <thead>
         <tr>
-            <th>Фамилия</th>
+            <th>Сотрудник</th>
             <th>Отработанные часы</th>
             <th>Дата</th>
             <th>Отпуск</th>
@@ -14,7 +14,7 @@
         </thead>
         <tbody>
         <tr th:each="el:${timeSheets}">
-            <th th:text="${el.user.lastName}"></th>
+            <th th:text="${el.user.firstName}+' '+${el.user.lastName}"></th>
             <th th:text="${el.workTime}"></th>
             <th th:text="${el.date.month}+' '+${el.date.year}"></th>
             <th th:text="${el.holiday}"></th>

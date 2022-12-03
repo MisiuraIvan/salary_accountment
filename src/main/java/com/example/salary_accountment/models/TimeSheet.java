@@ -17,6 +17,21 @@ public class TimeSheet {
     @OneToOne
     private Salary salary;
 
+    public TimeSheet(int i, int absenteeism, int holiday, int overtime, int sickLeave, int workTime, Date date, User user) {
+        this.timeSheetId=i;
+        this.absenteeism=absenteeism;
+        this.holiday=holiday;
+        this.overtime=overtime;
+        this.sickLeave=sickLeave;
+        this.workTime=workTime;
+        this.date=date;
+        this.user=user;
+    }
+
+    public TimeSheet() {
+
+    }
+
     public Integer getTimeSheetId() {
         return timeSheetId;
     }

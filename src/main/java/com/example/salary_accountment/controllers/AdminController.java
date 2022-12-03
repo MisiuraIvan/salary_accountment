@@ -175,6 +175,75 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "timesheetsDetails";
     }
+    @GetMapping("/admin/timesheets/add/{id}")
+    public String timesheetsAddShow(@PathVariable(value = "id") Integer id,Model model) {
+        Optional user=userRepository.findById(id);
+        model.addAttribute("user", user.get());
+        model.addAttribute("id", uid);
+        return "timesheetsAdd";
+    }
+    @PostMapping("/admin/timesheets/add/{id}")
+    public String timesheetsAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int absenteeism, @RequestParam int holiday,@RequestParam int overtime,@RequestParam int sickLeave,@RequestParam int workTime, Model model) {
+        int tid=timeSheetRepository.findTheBiggestId();
+        Optional<User> user=userRepository.findById(id);
+        Iterable<Date> d=dateRepository.findByMonthAndYear(month, year);
+        TimeSheet timeSheet = new TimeSheet(tid+1,absenteeism,holiday,overtime,sickLeave,workTime,d.iterator().next(),user.get());
+        timeSheetRepository.save(timeSheet);
+        return "redirect:/admin/timesheets";
+    }
+    @PostMapping(path="/admin/timesheets/details/{id}",params = "operation=Edit")
+    public String timeSheetEdit(@PathVariable(value = "id") Integer id,@RequestParam String user,@RequestParam String date, @RequestParam int workTime, @RequestParam int holiday,@RequestParam int sickLeave,@RequestParam int overtime,@RequestParam int absenteeism, Model model) {
+        Optional<User> u=userRepository.findByNameAndLastName(user.split(" ")[0],user.split(" ")[1]);
+        Iterable<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
+        TimeSheet timeSheet = new TimeSheet(id,absenteeism,holiday,overtime,sickLeave,workTime,d.iterator().next(),u.get());
+        timeSheetRepository.save(timeSheet);
+        return "redirect:/admin/timesheets/details/{id}";
+    }
+    @PostMapping(path="/admin/timesheets/details/{id}",params = "operation=Delete")
+    public String timeSheetsDelete(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<TimeSheet> timeSheet = timeSheetRepository.findById(id);
+        timeSheetRepository.delete(timeSheet.get());
+        return "redirect:/admin/timesheets";
+    }
+    @PostMapping(path="/admin/timesheets",params ="operation=Find")
+    public String timeSheetFind(Model model,@RequestParam String lastName, @RequestParam String month,@RequestParam int year) {
+        Iterable<TimeSheet> timeSheets=null;
+        if (!month.equals("") && year!=0 && !lastName.equals("") ) {
+            timeSheets = timeSheetRepository.findByLastNameAndMonthAndYear(lastName,month,year);
+        }else{
+            if(!month.equals("") && year!=0){
+                timeSheets = timeSheetRepository.findByMonthAndYear(month,year);
+            }
+            else {
+                if (!lastName.equals("") && year != 0) {
+                    timeSheets = timeSheetRepository.findByLastNameAndYear(lastName, year);
+                } else {
+                    if (!month.equals("") && !lastName.equals("")) {
+                        timeSheets = timeSheetRepository.findByLastNameAndMonth(lastName, month);
+                    } else {
+                        if(!month.equals("")){
+                            timeSheets = timeSheetRepository.findByMonth(month);
+                        }
+                        else{
+                            if (year!=0){
+                                timeSheets = timeSheetRepository.findByYear(year);
+                            }
+                            else{
+                                if(!lastName.equals("")){
+                                    timeSheets = timeSheetRepository.findByLastName(lastName);
+                                }
+                                else
+                                    return "redirect:/admin/dates";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("timesheets", timeSheets);
+        model.addAttribute("id", uid);
+        return "timesheets";
+    }
     @GetMapping("/admin/salaries")
     public String salaries(Model model) {
         Iterable<Salary> salaries = salaryRepository.findAll();

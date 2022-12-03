@@ -3,6 +3,8 @@
     <table class="table" >
         <thead>
         <tr>
+            <th>Сотрудник</th>
+            <th>Дата</th>
             <th>Вредные привычки</th>
             <th>Бонусы</th>
             <th>Мероприятия</th>
@@ -13,6 +15,8 @@
         </thead>
         <tbody>
         <tr th:each="el:${activity}">
+            <th th:text="${el.user.firstName}+' '+${el.user.lastName}"></th>
+            <th th:text="${el.date.month}+' '+${el.date.year}"></th>
             <th th:text="${el.badHabits}"></th>
             <th th:text="${el.bonus}"></th>
             <th th:text="${el.culturalEvents}"></th>
