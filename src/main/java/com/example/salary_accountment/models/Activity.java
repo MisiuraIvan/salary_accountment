@@ -18,6 +18,9 @@ public class Activity {
     @JoinColumn(name="userId", referencedColumnName = "userId", nullable = false)
     private User user;
 
+    public Activity(){
+
+    }
     public Activity(int activityId, int badHabits, int bonus, int culturalEvents, int delay, int respect, int timeliness, int uniform, Date date, User user) {
         this.activityId = activityId;
         this.culturalEvents = culturalEvents;

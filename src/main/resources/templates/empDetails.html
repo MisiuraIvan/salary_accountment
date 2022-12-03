@@ -9,6 +9,10 @@
 <body>
 <adminheader th:insert="adminheader::adminheader"></adminheader>
 <div class="form2">
+    <div class="col-12">
+        <a th:href="@{/admin/timesheets/add/{id}(id=${user.userid})}">Добавить табель</a>
+        <a th:href="@{/admin/activity/add/{id}(id=${user.userid})}">Добавить активность</a>
+    </div>
     <h4 class="mb-3">Личные данные пользователя</h4>
     <hr class="my-4">
     <form method="post">

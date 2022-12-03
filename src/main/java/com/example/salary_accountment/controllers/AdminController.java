@@ -242,12 +242,19 @@ public class AdminController {
         model.addAttribute("id", uid);
         return "activity";
     }
-    @PostMapping("/admin/activity/add")
-    public String activityAdd(@RequestParam String emp,@RequestParam String date, @RequestParam int badHabits, @RequestParam int bonus,@RequestParam int culturalEvents,@RequestParam int delay,@RequestParam int respect,@RequestParam int timeliness,@RequestParam int uniform, Model model) {
-        int id=activityRepository.findTheBiggestId();
-        Optional<User> user=userRepository.findByNameAndLastName(emp.split(" ")[0],emp.split(" ")[1]);
-        Iterable<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
-        Activity activity = new Activity(id+1,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.iterator().next(),user.get());
+    @GetMapping("/admin/activity/add/{id}")
+    public String activityAddShow(@PathVariable(value = "id") Integer id,Model model) {
+        Optional user=userRepository.findById(id);
+        model.addAttribute("user", user.get());
+        model.addAttribute("id", uid);
+        return "activityAdd";
+    }
+    @PostMapping("/admin/activity/add/{id}")
+    public String activityAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int badHabits, @RequestParam int bonus,@RequestParam int culturalEvents,@RequestParam int delay,@RequestParam int respect,@RequestParam int timeliness,@RequestParam int uniform, Model model) {
+        int aid=activityRepository.findTheBiggestId();
+        Optional<User> user=userRepository.findById(id);
+        Iterable<Date> d=dateRepository.findByMonthAndYear(month, year);
+        Activity activity = new Activity(aid+1,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.iterator().next(),user.get());
         activityRepository.save(activity);
         return "redirect:/admin/activity";
     }
