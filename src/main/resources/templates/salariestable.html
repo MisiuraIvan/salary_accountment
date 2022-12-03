@@ -3,7 +3,8 @@
     <table class="table" >
         <thead>
         <tr>
-            <th>Фамилия сотрудника</th>
+            <th>Cотрудник</th>
+            <th>Дата</th>
             <th>Премия</th>
             <th>Заработная плата</th>
             <th>Выплата аванса</th>
@@ -12,7 +13,8 @@
         </thead>
         <tbody>
         <tr th:each="el:${salaries}">
-            <th th:text="${el.timeSheet.user.lastName}"></th>
+            <th th:text="${el.timeSheet.user.firstName}+' '+${el.timeSheet.user.lastName}"></th>
+            <th th:text="${el.date.month}+' '+${el.date.year}"></th>
             <th th:text="${el.award}"></th>
             <th th:text="${el.salary}"></th>
             <th th:text="${el.prepayment}"></th>
