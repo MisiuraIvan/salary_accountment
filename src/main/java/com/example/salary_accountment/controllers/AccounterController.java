@@ -55,14 +55,7 @@ public class AccounterController {
         Iterable<User> employees = userRepository.findAll();
         model.addAttribute("employees", employees);
         model.addAttribute("id", uid);
-        return "employees";
-    }
-    @GetMapping("/accounter/employees/details/{id}")
-    public String empDetails(@PathVariable(value = "id") Integer id, Model model) {
-        Optional<User> user = userRepository.findById(id);
-        model.addAttribute("user", user.get());
-        model.addAttribute("id", uid);
-        return "empDetails";
+        return "acemployees";
     }
     @PostMapping(path="/accounter/employees",params ="operation=Find")
     public String employeesFind(Model model, @RequestParam String lastName,@RequestParam String post) {
@@ -82,42 +75,42 @@ public class AccounterController {
         }
         model.addAttribute("employees", employees);
         model.addAttribute("id", uid);
-        return "employees";
+        return "acemployees";
     }
     @GetMapping("/accounter/posts")
     public String posts(Model model) {
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
         model.addAttribute("id", uid);
-        return "posts";
+        return "acposts";
     }
     @PostMapping(path="/accounter/posts",params ="operation=Find")
     public String postsFind(Model model, @RequestParam String post) {
         Optional<Post> posts = postRepository.findByName(post);
         model.addAttribute("posts", posts.get());
         model.addAttribute("id", uid);
-        return "posts";
+        return "acposts";
     }
     @GetMapping("/accounter/timesheets")
     public String timesheets(Model model) {
         Iterable<TimeSheet> timeSheets = timeSheetRepository.findAll();
         model.addAttribute("timeSheets", timeSheets);
         model.addAttribute("id", uid);
-        return "timesheets";
+        return "actimesheets";
     }
     @GetMapping("/accounter/timesheets/details/{id}")
     public String timesheetsDetails(@PathVariable(value = "id") Integer id, Model model) {
         Optional<TimeSheet> timeSheet = timeSheetRepository.findById(id);
         model.addAttribute("timeSheet", timeSheet.get());
         model.addAttribute("id", uid);
-        return "timesheetsDetails";
+        return "actimesheetsDetails";
     }
     @GetMapping("/accounter/timesheets/add/{id}")
     public String timesheetsAddShow(@PathVariable(value = "id") Integer id,Model model) {
         Optional user=userRepository.findById(id);
         model.addAttribute("user", user.get());
         model.addAttribute("id", uid);
-        return "timesheetsAdd";
+        return "actimesheetsAdd";
     }
     @PostMapping("/accounter/timesheets/add/{id}")
     public String timesheetsAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int absenteeism, @RequestParam int holiday,@RequestParam int overtime,@RequestParam int sickLeave,@RequestParam int workTime, Model model) {
@@ -179,35 +172,35 @@ public class AccounterController {
         }
         model.addAttribute("timeSheets", timeSheets);
         model.addAttribute("id", uid);
-        return "timesheets";
+        return "actimesheets";
     }
     @GetMapping("/accounter/salaries")
     public String salaries(Model model) {
         Iterable<Salary> salaries = salaryRepository.findAll();
         model.addAttribute("salaries", salaries);
         model.addAttribute("id", uid);
-        return "salaries";
+        return "acsalaries";
     }
     @GetMapping("/accounter/salaries/details/{id}")
     public String salariesDetails(@PathVariable(value = "id") Integer id, Model model) {
         Optional<Salary> salary = salaryRepository.findById(id);
         model.addAttribute("salary", salary.get());
         model.addAttribute("id", uid);
-        return "salariesDetails";
+        return "acsalariesDetails";
     }
     @GetMapping("/accounter/activity")
     public String activity(Model model) {
         Iterable<Activity> activity = activityRepository.findAll();
         model.addAttribute("activity", activity);
         model.addAttribute("id", uid);
-        return "activity";
+        return "acactivity";
     }
     @GetMapping("/accounter/activity/details/{id}")
     public String activityDetails(@PathVariable(value = "id") Integer id, Model model) {
         Optional<Activity> activity = activityRepository.findById(id);
         model.addAttribute("activity", activity.get());
         model.addAttribute("id", uid);
-        return "activityDetails";
+        return "acactivityDetails";
     }
     @PostMapping(path="/accounter/activity",params ="operation=Find")
     public String activityFind(Model model,@RequestParam String lastName, @RequestParam String month,@RequestParam int year) {
@@ -246,14 +239,14 @@ public class AccounterController {
         }
         model.addAttribute("activity", activity);
         model.addAttribute("id", uid);
-        return "activity";
+        return "acactivity";
     }
     @GetMapping("/accounter/activity/add/{id}")
     public String activityAddShow(@PathVariable(value = "id") Integer id,Model model) {
         Optional user=userRepository.findById(id);
         model.addAttribute("user", user.get());
         model.addAttribute("id", uid);
-        return "activityAdd";
+        return "acactivityAdd";
     }
     @PostMapping("/accounter/activity/add/{id}")
     public String activityAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int badHabits, @RequestParam int bonus,@RequestParam int culturalEvents,@RequestParam int delay,@RequestParam int respect,@RequestParam int timeliness,@RequestParam int uniform, Model model) {
@@ -270,13 +263,13 @@ public class AccounterController {
         Iterable<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
         Activity activity = new Activity(id,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.iterator().next(),user.get());
         activityRepository.save(activity);
-        return "redirect:/admin/activity/details/{id}";
+        return "redirect:/accounter/activity/details/{id}";
     }
     @PostMapping(path="/accounter/activity/details/{id}",params = "operation=Delete")
     public String activityDelete(@PathVariable(value = "id") Integer id, Model model) {
         Optional<Activity> activity = activityRepository.findById(id);
         activityRepository.delete(activity.get());
-        return "redirect:/admin/activity";
+        return "redirect:/accounter/activity";
     }
 
     @GetMapping("/accounter/dates")
@@ -284,7 +277,7 @@ public class AccounterController {
         Iterable<Date> dates = dateRepository.findAll();
         model.addAttribute("dates", dates);
         model.addAttribute("id", uid);
-        return "dates";
+        return "acdates";
     }
     @PostMapping(path="/accounter/dates",params ="operation=Find")
     public String datesFind(Model model, @RequestParam String month,@RequestParam int year) {
@@ -304,33 +297,6 @@ public class AccounterController {
         }
         model.addAttribute("dates", dates);
         model.addAttribute("id", uid);
-        return "dates";
+        return "acdates";
     }
-    @PostMapping("/accounter/dates/add")
-    public String datesAdd(Model model,@RequestParam String month, @RequestParam int year, @RequestParam int workHours) {
-        int id=dateRepository.findTheBiggestId();
-        Date date = new Date(id+1,month,year,workHours);
-        dateRepository.save(date);
-        return "redirect:/accounter/dates";
-    }
-    @PostMapping(path="/accounter/dates/details/{id}",params = "operation=Edit")
-    public String dateEdit(@PathVariable(value = "id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int workHours, Model model) {
-        Date d = new Date(id,month,year,workHours);
-        dateRepository.save(d);
-        return "redirect:/accounter/dates/details/{id}";
-    }
-    @PostMapping(path="/accounter/dates/details/{id}",params = "operation=Delete")
-    public String dateDelete(@PathVariable(value = "id") Integer id, Model model) {
-        Optional<Date> date = dateRepository.findById(id);
-        dateRepository.delete(date.get());
-        return "redirect:/accounter/dates";
-    }
-    @GetMapping("/accounter/dates/details/{id}")
-    public String datesDetails(@PathVariable(value = "id") Integer id, Model model) {
-        Optional<Date> date = dateRepository.findById(id);
-        model.addAttribute("date", date.get());
-        model.addAttribute("id", uid);
-        return "datesDetails";
-    }
-
 }

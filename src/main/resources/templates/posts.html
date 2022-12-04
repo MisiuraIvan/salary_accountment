@@ -8,6 +8,10 @@
 </head>
 <body>
 <adminheader th:insert="adminheader::adminheader"></adminheader>
+<div class="col-12">
+    <a th:href="@{/admin/posts/add}">Создать новую должность</a>
+</div>
+<hr class="my-4">
 <postfind th:insert="postfind::postfind"></postfind>
 <poststable th:insert="poststable::poststable"></poststable>
 </body>

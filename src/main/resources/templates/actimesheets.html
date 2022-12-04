@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список табелей</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+<body>
+<header th:insert="accounterheader::accounterheader"></header>
+<activityfind th:insert="activityfind::activityfind"></activityfind>
+<div class="form3">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Сотрудник</th>
+            <th>Отработанные часы</th>
+            <th>Дата</th>
+            <th>Отпуск</th>
+            <th>Переработки</th>
+            <th>Больничные</th>
+            <th>Прогулы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el:${timeSheets}">
+            <th th:text="${el.user.firstName}+' '+${el.user.lastName}"></th>
+            <th th:text="${el.workTime}"></th>
+            <th th:text="${el.date.month}+' '+${el.date.year}"></th>
+            <th th:text="${el.holiday}"></th>
+            <th th:text="${el.overtime}"></th>
+            <th th:text="${el.sickLeave}"></th>
+            <th th:text="${el.absenteeism}"></th>
+            <th><a th:href="@{/accounter/timesheets/details/{id}(id=${el.timeSheetId})}">Подробнее</a></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

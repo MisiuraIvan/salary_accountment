@@ -8,6 +8,10 @@
 </head>
 <body>
 <adminheader th:insert="adminheader::adminheader"></adminheader>
+<div class="col-12">
+    <a th:href="@{/admin/employees/add}">Добавить сотрудника</a>
+</div>
+<hr class="my-4">
 <employeesfind th:insert="employeesfind::employeesfind"></employeesfind>
 <employeestable th:insert="employeestable::employeestable"></employeestable>
 </body>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Должности</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+<body>
+<header th:insert="accounterheader::accounterheader"></header>
+<postfind th:insert="postfind::postfind"></postfind>
+<div class="form3">
+    <table class="table" >
+        <thead>
+        <tr>
+            <th>Должность</th>
+            <th>Оклад</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el:${posts}">
+            <th th:text="${el.post}"></th>
+            <th th:text="${el.wages}"></th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
