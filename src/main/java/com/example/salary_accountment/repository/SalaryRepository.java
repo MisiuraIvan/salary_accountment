@@ -32,4 +32,10 @@ public interface SalaryRepository extends CrudRepository<Salary,Integer>{
 
     @Query("select u from Salary u where u.activity = :#{#activity} and u.timeSheet = :#{#timesheet}" )
     Optional<Salary> findByActivityAndTimeSheet(Activity activity, TimeSheet timesheet);
+
+    @Query("select u.salary from Salary u where u.timeSheet.date.dateId = :#{#id} and u.timeSheet.user.userid = :#{#userId}")
+    Integer SumByDateIdAndUserId(Integer id,Integer userId);
+
+    @Query("select sum(u.salary) from Salary u where u.timeSheet.date.dateId = :#{#dateId}")
+    Integer SumByDateId(Integer dateId);
 }
