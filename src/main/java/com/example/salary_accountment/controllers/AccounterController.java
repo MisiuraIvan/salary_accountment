@@ -188,6 +188,53 @@ public class AccounterController {
         model.addAttribute("id", uid);
         return "acsalariesDetails";
     }
+    @PostMapping(path="/accounter/salaries/details/{id}",params = "operation=Delete")
+    public String salariesDelete(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Salary> salary = salaryRepository.findById(id);
+        salaryRepository.delete(salary.get());
+        Optional<Parameters> parameters = parametersRepository.findById(id);
+        parametersRepository.delete(parameters.get());
+        return "redirect:/admin/salaries";
+    }
+    @PostMapping(path="/accounter/salaries",params ="operation=Find")
+    public String salaryFind(Model model,@RequestParam String lastName, @RequestParam String month,@RequestParam int year) {
+        Iterable<Salary> salaries=null;
+        if (!month.equals("") && year!=0 && !lastName.equals("") ) {
+            salaries = salaryRepository.findByLastNameAndMonthAndYear(lastName,month,year);
+        }else{
+            if(!month.equals("") && year!=0){
+                salaries = salaryRepository.findByMonthAndYear(month,year);
+            }
+            else {
+                if (!lastName.equals("") && year != 0) {
+                    salaries = salaryRepository.findByLastNameAndYear(lastName, year);
+                } else {
+                    if (!month.equals("") && !lastName.equals("")) {
+                        salaries = salaryRepository.findByLastNameAndMonth(lastName, month);
+                    } else {
+                        if(!month.equals("")){
+                            salaries = salaryRepository.findByMonth(month);
+                        }
+                        else{
+                            if (year!=0){
+                                salaries = salaryRepository.findByYear(year);
+                            }
+                            else{
+                                if(!lastName.equals("")){
+                                    salaries = salaryRepository.findByLastName(lastName);
+                                }
+                                else
+                                    return "redirect:/accounter/salaries";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("salaries", salaries);
+        model.addAttribute("id", uid);
+        return "acsalaries";
+    }
     @GetMapping("/accounter/activity")
     public String activity(Model model) {
         Iterable<Activity> activity = activityRepository.findAll();
@@ -298,5 +345,35 @@ public class AccounterController {
         model.addAttribute("dates", dates);
         model.addAttribute("id", uid);
         return "acdates";
+    }
+    @GetMapping("/accounter/salaryAccount")
+    public String salaryAccount(Model model) {
+        Iterable<TimeSheet> timesheets = timeSheetRepository.findAll();
+        Iterable<Date> dates = dateRepository.findAll();
+        Iterable<User> users=userRepository.findAll();
+        Iterable<Activity> activity=activityRepository.findAll();
+        model.addAttribute("dates", dates);
+        model.addAttribute("timesheets", timesheets);
+        model.addAttribute("activity", activity);
+        model.addAttribute("users", users);
+        return "salaryAcc";
+    }
+    @PostMapping("/accounter/salaryAccount")
+    public String salaryAcc(@RequestParam double netSalary,@RequestParam double salary,@RequestParam double pension, double fszn,@RequestParam double tax,@RequestParam float award,@RequestParam int timesheetid,@RequestParam int activityid, Model model) {
+        Optional<TimeSheet> timeSheet=timeSheetRepository.findById(timesheetid);
+        Optional<Activity> activity=activityRepository.findById(activityid);
+        Optional<Salary> sal=salaryRepository.findByActivityAndTimeSheet(activity.get(),timeSheet.get());
+        if(sal.isPresent()){
+            Parameters parameters = new Parameters(sal.get().getSalaryId(), netSalary, pension, fszn, tax);
+            parametersRepository.save(parameters);
+            Salary salary1 = new Salary(sal.get().getSalaryId(), award, salary, timeSheet.get(), activity.get(), parameters);
+            salaryRepository.save(salary1);
+        }else {
+            Parameters parameters = new Parameters((parametersRepository.BiggestId() + 1), netSalary, pension, fszn, tax);
+            parametersRepository.save(parameters);
+            Salary salary1 = new Salary((salaryRepository.BiggestId() + 1), award, salary, timeSheet.get(), activity.get(), parameters);
+            salaryRepository.save(salary1);
+        }
+        return "redirect:/accounter/salaryAccount";
     }
 }

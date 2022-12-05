@@ -34,6 +34,9 @@ public class Activity {
         this.user = user;
     }
 
+    public int Sum(){
+        return culturalEvents+delay+bonus+respect+uniform+timeliness+badHabits;
+    }
     public Integer getActivityId() {
         return activityId;
     }

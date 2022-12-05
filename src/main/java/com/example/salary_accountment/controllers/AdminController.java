@@ -120,7 +120,9 @@ public class AdminController {
     @PostMapping(path="/admin/employees/details/{id}",params = "operation=Delete")
     public String employeesDelete(@PathVariable(value = "id") Integer id, Model model) {
         Optional<User> user = userRepository.findById(id);
+        Optional<AuthorizationData> authorizationData = authorizationDataRepository.findById(id);
         userRepository.delete(user.get());
+        authorizationDataRepository.delete(authorizationData.get());
         return "redirect:/admin/employees";
     }
     @PostMapping(path="/admin/posts",params ="operation=Find")
@@ -257,6 +259,53 @@ public class AdminController {
         model.addAttribute("salary", salary.get());
         model.addAttribute("id", uid);
         return "salariesDetails";
+    }
+    @PostMapping(path="/admin/salaries/details/{id}",params = "operation=Delete")
+    public String salariesDelete(@PathVariable(value = "id") Integer id, Model model) {
+        Optional<Salary> salary = salaryRepository.findById(id);
+        salaryRepository.delete(salary.get());
+        Optional<Parameters> parameters = parametersRepository.findById(id);
+        parametersRepository.delete(parameters.get());
+        return "redirect:/admin/salaries";
+    }
+    @PostMapping(path="/admin/salaries",params ="operation=Find")
+    public String salaryFind(Model model,@RequestParam String lastName, @RequestParam String month,@RequestParam int year) {
+        Iterable<Salary> salaries=null;
+        if (!month.equals("") && year!=0 && !lastName.equals("") ) {
+            salaries = salaryRepository.findByLastNameAndMonthAndYear(lastName,month,year);
+        }else{
+            if(!month.equals("") && year!=0){
+                salaries = salaryRepository.findByMonthAndYear(month,year);
+            }
+            else {
+                if (!lastName.equals("") && year != 0) {
+                    salaries = salaryRepository.findByLastNameAndYear(lastName, year);
+                } else {
+                    if (!month.equals("") && !lastName.equals("")) {
+                        salaries = salaryRepository.findByLastNameAndMonth(lastName, month);
+                    } else {
+                        if(!month.equals("")){
+                            salaries = salaryRepository.findByMonth(month);
+                        }
+                        else{
+                            if (year!=0){
+                                salaries = salaryRepository.findByYear(year);
+                            }
+                            else{
+                                if(!lastName.equals("")){
+                                    salaries = salaryRepository.findByLastName(lastName);
+                                }
+                                else
+                                    return "redirect:/admin/salaries";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("salaries", salaries);
+        model.addAttribute("id", uid);
+        return "salaries";
     }
     @GetMapping("/admin/activity")
     public String activity(Model model) {

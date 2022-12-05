@@ -1,14 +1,22 @@
 package com.example.salary_accountment.models;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 
 @Entity
 public class Salary {
     @Id
     private Integer salaryId;
+    @Column(nullable = true)
     private float award;
+    @Column(nullable = true)
     private double salary;
+    @Column(nullable = true)
+    @ColumnDefault("null")
     private double paidSalary;
+    @ColumnDefault("false")
+    @Column(nullable = true)
     private boolean prepayment;
     @OneToOne
     @JoinColumn(name="timeSheetId", referencedColumnName = "timeSheetId", nullable = false)
@@ -17,7 +25,20 @@ public class Salary {
     @JoinColumn(name="activityId", referencedColumnName = "activityId", nullable = false)
     private Activity activity;
     @OneToOne
+    @JoinColumn(name="parametersId", referencedColumnName = "parametersId", nullable = true)
     private Parameters parameters;
+
+    public Salary() {
+    }
+
+    public Salary(int id,float award, double salary, TimeSheet timeSheet, Activity activity, Parameters parameters) {
+        this.salaryId=id;
+        this.award = award;
+        this.salary = salary;
+        this.timeSheet = timeSheet;
+        this.activity = activity;
+        this.parameters = parameters;
+    }
 
     public Integer getSalaryId() {
         return salaryId;

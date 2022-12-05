@@ -5,10 +5,28 @@ import javax.persistence.*;
 public class Parameters {
     @Id
     private Integer parametersId;
-    private double netSalary, pension, fszn;
+    private double netSalary, pension, fszn, tax;
     @OneToOne
-    @JoinColumn(name="salaryId", referencedColumnName = "salaryId", nullable = false)
     private Salary salary;
+
+    public Parameters() {
+    }
+
+    public Parameters(int id,double netSalary, double pension, double fszn, double tax) {
+        this.parametersId=id;
+        this.netSalary = netSalary;
+        this.pension = pension;
+        this.fszn = fszn;
+        this.tax = tax;
+    }
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
+    }
 
     public Integer getParametersId() {
         return parametersId;
