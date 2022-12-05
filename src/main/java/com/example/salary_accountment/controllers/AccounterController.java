@@ -2,6 +2,9 @@ package com.example.salary_accountment.controllers;
 
 import com.example.salary_accountment.models.*;
 import com.example.salary_accountment.repository.*;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -403,5 +410,49 @@ public class AccounterController {
         model.addAttribute("sum", sum);
         model.addAttribute("dates", dates);
         return "acanalystics";
+    }
+    @PostMapping("/accounter/analystics")
+    public String createReport(@RequestParam String start, @RequestParam String end, Model model) {
+        createRep(start, end);
+        return "redirect:/accounter/analystics";
+    }
+    public void createRep(String start, String end) {
+        XWPFDocument document = new XWPFDocument();
+        try {
+            FileOutputStream out = new FileOutputStream(new File(start + "-" + end + ".docx"));
+            document.createParagraph().createRun().setText("   Отчет расчета заработной платы за период: " + start + " по " + end);
+            document.createParagraph();
+            XWPFTable table = document.createTable();
+            XWPFTableRow tableRowOne = table.getRow(0);
+            document.createParagraph();
+            tableRowOne.getCell(0).setText("   Фамилия   ");
+            tableRowOne.addNewTableCell().setText("   Имя   ");
+            tableRowOne.addNewTableCell().setText("   Должность   ");
+            tableRowOne.addNewTableCell().setText("   Дата   ");
+            tableRowOne.addNewTableCell().setText("   ЗП   ");
+            tableRowOne.addNewTableCell().setText("   Чистая ЗП   ");
+            tableRowOne.addNewTableCell().setText("   ФСЗН  ");
+            int k = 0;
+            Iterable<Date> startid = dateRepository.findByMonthAndYear(start.split(" ")[0], Integer.parseInt(start.split(" ")[1]));
+            Iterable<Date> endid = dateRepository.findByMonthAndYear(end.split(" ")[0], Integer.parseInt(end.split(" ")[1]));
+            Iterable<Salary> salary = salaryRepository.findByDate(startid.iterator().next().getDateId(), endid.iterator().next().getDateId());
+            for (Salary el : salary) {
+                XWPFTableRow tableRowTwo = table.createRow();
+                tableRowTwo.getCell(0).setText(el.getTimeSheet().getUser().getFirstName());
+                tableRowTwo.getCell(1).setText(el.getTimeSheet().getUser().getLastName());
+                tableRowTwo.getCell(2).setText(el.getTimeSheet().getUser().getPost().getPost());
+                tableRowTwo.getCell(3).setText(el.getTimeSheet().getDate().getMonth() + " " + el.getTimeSheet().getDate().getYear());
+                tableRowTwo.getCell(4).setText(String.valueOf(el.getSalary()));
+                tableRowTwo.getCell(5).setText(String.valueOf(el.getParameters().getNetSalary()));
+                tableRowTwo.getCell(6).setText(String.valueOf(el.getParameters().getFszn()));
+            }
+
+            document.write(out);
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

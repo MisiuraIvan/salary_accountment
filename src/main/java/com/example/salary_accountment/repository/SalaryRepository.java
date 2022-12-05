@@ -38,4 +38,7 @@ public interface SalaryRepository extends CrudRepository<Salary,Integer>{
 
     @Query("select sum(u.salary) from Salary u where u.timeSheet.date.dateId = :#{#dateId}")
     Integer SumByDateId(Integer dateId);
+
+    @Query("select u from Salary u where u.timeSheet.date.dateId between :#{#dateId} and :#{#dateId1}")
+    Iterable<Salary> findByDate(Integer dateId, Integer dateId1);
 }
