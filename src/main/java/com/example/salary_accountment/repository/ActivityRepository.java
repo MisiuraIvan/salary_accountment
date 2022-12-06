@@ -3,6 +3,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.example.salary_accountment.models.*;
 
+import java.util.Optional;
+
 public interface ActivityRepository extends CrudRepository<Activity,Integer>{
 
     @Query("select u from Activity u where u.date.month=:#{#month} and u.date.year=:#{#year} and u.user.lastName=:#{#lastName}")
@@ -31,4 +33,7 @@ public interface ActivityRepository extends CrudRepository<Activity,Integer>{
 
     @Query("select u from Activity u where u.user.userid=:#{#uid}")
     Iterable<Activity> findByUserId(int uid);
+
+    @Query("select u from Activity u where u.date.month=:#{#month} and u.date.year=:#{#year} and u.user.userid=:#{#userid}")
+    Optional<Activity> findByUserIdAndMonthAndYear(Integer userid, String month, int year);
 }

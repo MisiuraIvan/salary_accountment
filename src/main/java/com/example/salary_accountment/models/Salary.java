@@ -40,6 +40,16 @@ public class Salary {
         this.parameters = parameters;
     }
 
+    public Salary(int id,float award, double salary, TimeSheet timeSheet, Activity activity, boolean prepayment, double paidSalary) {
+        this.salaryId=id;
+        this.award = award;
+        this.salary = salary;
+        this.timeSheet = timeSheet;
+        this.activity = activity;
+        this.prepayment = prepayment;
+        this.paidSalary=paidSalary;
+    }
+
     public Integer getSalaryId() {
         return salaryId;
     }

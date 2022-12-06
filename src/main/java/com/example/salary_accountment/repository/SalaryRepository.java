@@ -44,4 +44,7 @@ public interface SalaryRepository extends CrudRepository<Salary,Integer>{
 
     @Query("select u from Salary u where u.timeSheet.user.userid=:#{#uid}")
     Iterable<Salary> findByUserId(int uid);
+
+    @Query("select u from Salary u where u.timeSheet.user.userid = :#{#id} and u.timeSheet.date.dateId =:#{#dateId}")
+    Optional<Salary> findByUserIdAndDateId(Integer id,Integer dateId);
 }

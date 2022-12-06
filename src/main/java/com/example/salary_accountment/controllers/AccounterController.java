@@ -124,16 +124,16 @@ public class AccounterController {
     public String timesheetsAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int absenteeism, @RequestParam int holiday,@RequestParam int overtime,@RequestParam int sickLeave,@RequestParam int workTime, Model model) {
         int tid=timeSheetRepository.findTheBiggestId();
         Optional<User> user=userRepository.findById(id);
-        Iterable<Date> d=dateRepository.findByMonthAndYear(month, year);
-        TimeSheet timeSheet = new TimeSheet(tid+1,absenteeism,holiday,overtime,sickLeave,workTime,d.iterator().next(),user.get());
+        Optional<Date> d=dateRepository.findByMonthAndYear(month, year);
+        TimeSheet timeSheet = new TimeSheet(tid+1,absenteeism,holiday,overtime,sickLeave,workTime,d.get(),user.get());
         timeSheetRepository.save(timeSheet);
         return "redirect:/accounter/timesheets";
     }
     @PostMapping(path="/accounter/timesheets/details/{id}",params = "operation=Edit")
     public String timeSheetEdit(@PathVariable(value = "id") Integer id,@RequestParam String user,@RequestParam String date, @RequestParam int workTime, @RequestParam int holiday,@RequestParam int sickLeave,@RequestParam int overtime,@RequestParam int absenteeism, Model model) {
         Optional<User> u=userRepository.findByNameAndLastName(user.split(" ")[0],user.split(" ")[1]);
-        Iterable<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
-        TimeSheet timeSheet = new TimeSheet(id,absenteeism,holiday,overtime,sickLeave,workTime,d.iterator().next(),u.get());
+        Optional<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
+        TimeSheet timeSheet = new TimeSheet(id,absenteeism,holiday,overtime,sickLeave,workTime,d.get(),u.get());
         timeSheetRepository.save(timeSheet);
         return "redirect:/accounter/timesheets/details/{id}";
     }
@@ -307,16 +307,16 @@ public class AccounterController {
     public String activityAdd(@PathVariable(value="id") Integer id,@RequestParam String month,@RequestParam int year, @RequestParam int badHabits, @RequestParam int bonus,@RequestParam int culturalEvents,@RequestParam int delay,@RequestParam int respect,@RequestParam int timeliness,@RequestParam int uniform, Model model) {
         int aid=activityRepository.findTheBiggestId();
         Optional<User> user=userRepository.findById(id);
-        Iterable<Date> d=dateRepository.findByMonthAndYear(month, year);
-        Activity activity = new Activity(aid+1,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.iterator().next(),user.get());
+        Optional<Date> d=dateRepository.findByMonthAndYear(month, year);
+        Activity activity = new Activity(aid+1,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.get(),user.get());
         activityRepository.save(activity);
         return "redirect:/accounter/activity";
     }
     @PostMapping(path="/accounter/activity/details/{id}",params = "operation=Edit")
     public String dateEdit(@PathVariable(value = "id") Integer id,@RequestParam String emp,@RequestParam String date, @RequestParam int badHabits, @RequestParam int bonus,@RequestParam int culturalEvents,@RequestParam int delay,@RequestParam int respect,@RequestParam int timeliness,@RequestParam int uniform, Model model) {
         Optional<User> user=userRepository.findByNameAndLastName(emp.split(" ")[0],emp.split(" ")[1]);
-        Iterable<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
-        Activity activity = new Activity(id,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.iterator().next(),user.get());
+        Optional<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
+        Activity activity = new Activity(id,badHabits,bonus,culturalEvents,delay,respect,timeliness,uniform,d.get(),user.get());
         activityRepository.save(activity);
         return "redirect:/accounter/activity/details/{id}";
     }
@@ -336,7 +336,7 @@ public class AccounterController {
     }
     @PostMapping(path="/accounter/dates",params ="operation=Find")
     public String datesFind(Model model, @RequestParam String month,@RequestParam int year) {
-        Iterable<Date> dates=null;
+        Optional<Date> dates=null;
         if (!month.equals("") && year!=0) {
             dates = dateRepository.findByMonthAndYear(month,year);
         }else{
@@ -367,7 +367,7 @@ public class AccounterController {
         model.addAttribute("id", uid);
         return "salaryAcc";
     }
-    @PostMapping("/accounter/salaryAccount")
+    @PostMapping(path="/accounter/salaryAccount",params ="operation=Save")
     public String salaryAcc(@RequestParam double netSalary,@RequestParam double salary,@RequestParam double pension, double fszn,@RequestParam double tax,@RequestParam float award,@RequestParam int timesheetid,@RequestParam int activityid, Model model) {
         Optional<TimeSheet> timeSheet=timeSheetRepository.findById(timesheetid);
         Optional<Activity> activity=activityRepository.findById(activityid);
@@ -375,13 +375,52 @@ public class AccounterController {
         if(sal.isPresent()){
             Parameters parameters = new Parameters(sal.get().getSalaryId(), netSalary, pension, fszn, tax);
             parametersRepository.save(parameters);
-            Salary salary1 = new Salary(sal.get().getSalaryId(), award, salary, timeSheet.get(), activity.get(), parameters);
+            Salary salary1 = sal.get();
+            salary1.setSalary(salary);
+            salary1.setTimeSheet(timeSheet.get());
+            salary1.setActivity(activity.get());
+            salary1.setAward(award);
+            salary1.setParameters(parameters);
             salaryRepository.save(salary1);
         }else {
             Parameters parameters = new Parameters((parametersRepository.BiggestId() + 1), netSalary, pension, fszn, tax);
             parametersRepository.save(parameters);
             Salary salary1 = new Salary((salaryRepository.BiggestId() + 1), award, salary, timeSheet.get(), activity.get(), parameters);
             salaryRepository.save(salary1);
+        }
+        return "redirect:/accounter/salaryAccount";
+    }
+
+    @PostMapping(path="/accounter/salaryAccount",params ="operation=Prepayment")
+    public String prepayment(@RequestParam String date, Model model) {
+        Optional<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
+        Iterable<User> users=userRepository.findAll();
+        for (User el:users) {
+            Optional<Salary> salary=salaryRepository.findByUserIdAndDateId(el.getUserid(),d.get().getDateId());
+            if(salary.isPresent()){
+                Salary sal=salary.get();
+                sal.setPrepayment(true);
+                sal.setPaidSalary(el.getPost().getWages()*0.6);
+                salaryRepository.save(sal);
+            }else{
+                Salary sal=new Salary(salaryRepository.BiggestId()+1,0,0,timeSheetRepository.findByUserIdAndMonthAndYear(el.getUserid(),date.split(" ")[0], Integer.parseInt(date.split(" ")[1])).get(),activityRepository.findByUserIdAndMonthAndYear(el.getUserid(),date.split(" ")[0], Integer.parseInt(date.split(" ")[1])).get(),true,el.getPost().getWages()*0.6);
+                salaryRepository.save(sal);
+            }
+        }
+        return "redirect:/accounter/salaryAccount";
+    }
+
+    @PostMapping(path="/accounter/salaryAccount",params ="operation=Salary")
+    public String salary(@RequestParam String date, Model model) {
+        Optional<Date> d=dateRepository.findByMonthAndYear(date.split(" ")[0], Integer.parseInt(date.split(" ")[1]));
+        Iterable<User> users=userRepository.findAll();
+        for (User el:users) {
+            Optional<Salary> salary=salaryRepository.findByUserIdAndDateId(el.getUserid(),d.get().getDateId());
+            if(salary.isPresent()){
+                Salary sal=salary.get();
+                sal.setPaidSalary(sal.getSalary());
+                salaryRepository.save(sal);
+            }
         }
         return "redirect:/accounter/salaryAccount";
     }
@@ -435,9 +474,9 @@ public class AccounterController {
             tableRowOne.addNewTableCell().setText("   Чистая ЗП   ");
             tableRowOne.addNewTableCell().setText("   ФСЗН  ");
             int k = 0;
-            Iterable<Date> startid = dateRepository.findByMonthAndYear(start.split(" ")[0], Integer.parseInt(start.split(" ")[1]));
-            Iterable<Date> endid = dateRepository.findByMonthAndYear(end.split(" ")[0], Integer.parseInt(end.split(" ")[1]));
-            Iterable<Salary> salary = salaryRepository.findByDate(startid.iterator().next().getDateId(), endid.iterator().next().getDateId());
+            Optional<Date> startid = dateRepository.findByMonthAndYear(start.split(" ")[0], Integer.parseInt(start.split(" ")[1]));
+            Optional<Date> endid = dateRepository.findByMonthAndYear(end.split(" ")[0], Integer.parseInt(end.split(" ")[1]));
+            Iterable<Salary> salary = salaryRepository.findByDate(startid.get().getDateId(), endid.get().getDateId());
             for (Salary el : salary) {
                 XWPFTableRow tableRowTwo = table.createRow();
                 tableRowTwo.getCell(0).setText(el.getTimeSheet().getUser().getFirstName());

@@ -3,6 +3,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import com.example.salary_accountment.models.*;
 
+import java.util.Optional;
+
 public interface TimeSheetRepository extends CrudRepository<TimeSheet,Integer>{
 
     @Query("select u from TimeSheet u where u.date.month=:#{#month} and u.date.year=:#{#year} and u.user.lastName=:#{#lastName}")
@@ -31,4 +33,7 @@ public interface TimeSheetRepository extends CrudRepository<TimeSheet,Integer>{
 
     @Query("select u from TimeSheet u where u.user.userid=:#{#uid}")
     Iterable<TimeSheet> findByUserId(int uid);
+
+    @Query("select u from TimeSheet u where u.date.month=:#{#month} and u.date.year=:#{#year} and u.user.userid=:#{#userid}")
+    Optional<TimeSheet> findByUserIdAndMonthAndYear(Integer userid, String month, int year);
 }
