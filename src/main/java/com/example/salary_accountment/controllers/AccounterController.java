@@ -364,6 +364,7 @@ public class AccounterController {
         model.addAttribute("timesheets", timesheets);
         model.addAttribute("activity", activity);
         model.addAttribute("users", users);
+        model.addAttribute("id", uid);
         return "salaryAcc";
     }
     @PostMapping("/accounter/salaryAccount")
@@ -409,6 +410,7 @@ public class AccounterController {
         model.addAttribute("usersum", userSum);
         model.addAttribute("sum", sum);
         model.addAttribute("dates", dates);
+        model.addAttribute("id", uid);
         return "acanalystics";
     }
     @PostMapping("/accounter/analystics")

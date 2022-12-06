@@ -28,4 +28,7 @@ public interface TimeSheetRepository extends CrudRepository<TimeSheet,Integer>{
 
     @Query("select max(timeSheetId) from TimeSheet ")
     int findTheBiggestId();
+
+    @Query("select u from TimeSheet u where u.user.userid=:#{#uid}")
+    Iterable<TimeSheet> findByUserId(int uid);
 }

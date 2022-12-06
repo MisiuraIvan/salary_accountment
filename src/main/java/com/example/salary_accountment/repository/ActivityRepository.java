@@ -28,4 +28,7 @@ public interface ActivityRepository extends CrudRepository<Activity,Integer>{
 
     @Query("select max(activityId) from Activity ")
     int findTheBiggestId();
+
+    @Query("select u from Activity u where u.user.userid=:#{#uid}")
+    Iterable<Activity> findByUserId(int uid);
 }
