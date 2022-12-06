@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
@@ -61,5 +62,20 @@ public class UserController {
         model.addAttribute("salaries", salaries);
         model.addAttribute("id", uid);
         return "showuserdata";
+    }
+
+    @GetMapping("/user/analystics")
+    public String analistics(Model model) {
+        Iterable<Date> dates = dateRepository.findAll();
+        int i = 0;
+        Integer[] userSum=new Integer[((int) dates.spliterator().getExactSizeIfKnown())];
+        for (Date el : dates) {
+            userSum[i] = salaryRepository.SumByDateIdAndUserId(el.getDateId(), uid);
+            i++;
+        }
+        model.addAttribute("usersum", userSum);
+        model.addAttribute("dates", dates);
+        model.addAttribute("id", uid);
+        return "useranalystics";
     }
 }
